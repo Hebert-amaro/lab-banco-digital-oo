@@ -17,18 +17,40 @@ public abstract class Conta implements IConta {
 
 	@Override
 	public void sacar(double valor) {
-		saldo -= valor;
+		// Adicionando uma validação simples para saque
+		if (saldo >= valor && valor > 0) {
+			saldo -= valor;
+		} else if (valor <= 0) {
+            System.out.println("Valor de saque deve ser positivo.");
+        }
+        else {
+			System.out.println("Saldo insuficiente!");
+		}
 	}
 
 	@Override
 	public void depositar(double valor) {
-		saldo += valor;
+		// Adicionando uma validação simples para depósito
+		if (valor > 0) {
+			saldo += valor;
+		} else {
+			System.out.println("Valor de depósito deve ser positivo.");
+		}
 	}
 
 	@Override
 	public void transferir(double valor, IConta contaDestino) {
-		this.sacar(valor);
-		contaDestino.depositar(valor);
+		// Primeiro saca da conta de origem
+		if (this.saldo >= valor && valor > 0) {
+			this.sacar(valor);
+			// Depois deposita na conta de destino
+			contaDestino.depositar(valor);
+		} else if (valor <= 0) {
+            System.out.println("Valor de transferência deve ser positivo.");
+        }
+        else {
+			System.out.println("Saldo insuficiente para realizar a transferência.");
+		}
 	}
 
 	public int getAgencia() {
